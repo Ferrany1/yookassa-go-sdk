@@ -190,18 +190,18 @@ type Item struct {
 	CustomsDeclarationNumber string `json:"customs_declaration_number,omitempty"`
 	Excise                   string `json:"excise,omitempty"`
 }
-
+type YooCustomer struct {
+	FullName string `json:"full_name,omitempty"`
+	INN      string `json:"inn,omitempty"`
+	Email    string `json:"email,omitempty"`
+	Phone    string `json:"phone,omitempty"`
+}
 type Receipt struct {
-	Customer *struct {
-		FullName string `json:"full_name,omitempty"`
-		INN      string `json:"inn,omitempty"`
-		Email    string `json:"email,omitempty"`
-		Phone    string `json:"phone,omitempty"`
-	} `json:"customer,omitempty"`
-	Items         []Item `json:"items"`
-	TaxSystemCode int    `json:"tax_system_code,omitempty"`
-	Phone         string `json:"phone,omitempty"`
-	Email         string `json:"email,omitempty"`
+	Customer      YooCustomer `json:"customer,omitempty"`
+	Items         []Item      `json:"items"`
+	TaxSystemCode int         `json:"tax_system_code,omitempty"`
+	Phone         string      `json:"phone,omitempty"`
+	Email         string      `json:"email,omitempty"`
 }
 
 type PaymentConfig struct {
