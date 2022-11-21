@@ -1,6 +1,6 @@
 package payment_method //nolint:revive // better package readability
 
-import "github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/amount"
+import "github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
 
 type PaymentMethodType string
 

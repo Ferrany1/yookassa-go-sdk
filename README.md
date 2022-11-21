@@ -14,12 +14,12 @@ import (
 	"context"
 	"time"
 
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/adapter"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/amount"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/confirmation"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/payment"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/payment_method"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/status"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/adapter"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/confirmation"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment_method"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/status"
 )
 
 func main() {
@@ -78,12 +78,12 @@ import (
 	"context"
 	"time"
 
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/adapter"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/amount"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/confirmation"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/payment"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/payment_method"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/status"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/adapter"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/confirmation"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment_method"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/status"
 )
 
 func main() {
@@ -172,11 +172,11 @@ import (
 	"context"
 	"time"
 
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/adapter"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/amount"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/confirmation"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/payment"
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/status"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/adapter"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/confirmation"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/status"
 )
 
 func main() {

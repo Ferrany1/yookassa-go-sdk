@@ -1,6 +1,6 @@
 package payment
 
-import "github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/amount"
+import "github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
 
 type RawPaymentPart struct {
 	// Сумма платежа.

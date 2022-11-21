@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 
-	"github.com/Ferrany1/yookassa-go-sdk-fed/pkg/model/payment"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
 )
 
 type RawKassaAdapter struct {
