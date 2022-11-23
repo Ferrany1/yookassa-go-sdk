@@ -76,7 +76,7 @@ func (m *BasePaymentMethod) WithTitle(title string) *BasePaymentMethod {
 type AlfabankPaymentMethod struct {
 	BasePaymentMethod
 	// Логин пользователя в Альфа-Клике (привязанный телефон или дополнительный логин).
-	Login string `json:"login"`
+	Login *string `json:"login"`
 }
 
 func NewAlfabankPaymentMethod() AlfabankPaymentMethod {
@@ -84,14 +84,14 @@ func NewAlfabankPaymentMethod() AlfabankPaymentMethod {
 }
 
 func (m *AlfabankPaymentMethod) WithLogin(login string) *AlfabankPaymentMethod {
-	m.Login = login
+	m.Login = &login
 	return m
 }
 
 type MobileBalancePaymentMethod struct {
 	BasePaymentMethod
 	// Телефон, с баланса которого осуществляется платеж. Указывается в формате ITU-T E.164, например 79000000000.
-	Phone string `json:"phone"`
+	Phone *string `json:"phone"`
 }
 
 func NewMobileBalancePaymentMethod() MobileBalancePaymentMethod {
@@ -99,21 +99,21 @@ func NewMobileBalancePaymentMethod() MobileBalancePaymentMethod {
 }
 
 func (m *MobileBalancePaymentMethod) WithPhone(phone string) *MobileBalancePaymentMethod {
-	m.Phone = phone
+	m.Phone = &phone
 	return m
 }
 
 type BankCardPaymentMethod struct {
 	BasePaymentMethod
 	// Данные банковской карты.
-	Card Card `json:"card"`
+	Card *Card `json:"card"`
 }
 
 func NewBankCardPaymentMethod() BankCardPaymentMethod {
 	return BankCardPaymentMethod{BasePaymentMethod: BasePaymentMethod{Type: BankCardPaymentMethodType}}
 }
 
-func (m *BankCardPaymentMethod) WithCard(card Card) *BankCardPaymentMethod {
+func (m *BankCardPaymentMethod) WithCard(card *Card) *BankCardPaymentMethod {
 	m.Card = card
 	return m
 }
@@ -122,7 +122,7 @@ type InstallmentsPaymentMethod struct {
 	BasePaymentMethod
 	// Телефон, с баланса которого осуществляется платеж. Указывается в формате ITU-T E.164, например 79000000000.
 	// Поле можно оставить пустым: пользователь сможет заполнить его при оплате на стороне ЮKassa.
-	Phone string `json:"phone"`
+	Phone *string `json:"phone"`
 }
 
 func NewInstallmentsPaymentMethod() InstallmentsPaymentMethod {
@@ -130,7 +130,7 @@ func NewInstallmentsPaymentMethod() InstallmentsPaymentMethod {
 }
 
 func (m *InstallmentsPaymentMethod) WithPhone(phone string) *InstallmentsPaymentMethod {
-	m.Phone = phone
+	m.Phone = &phone
 	return m
 }
 
@@ -145,29 +145,29 @@ func NewCashPaymentMethod() CashPaymentMethod {
 type B2BSberbankPaymentMethod struct {
 	BasePaymentMethod
 
-	PayerBankDetails PayerBankDetails `json:"payer_bank_details"`
+	PayerBankDetails *PayerBankDetails `json:"payer_bank_details"`
 	// Назначение платежа (не больше 210 символов).
-	PaymentPurpose string `json:"payment_purpose"`
+	PaymentPurpose *string `json:"payment_purpose"`
 	// Данные о налоге на добавленную стоимость (НДС). Платеж может облагаться и не облагаться НДС.
 	// Товары могут облагаться по одной ставке НДС или по разным.
-	VATData VATData `json:"vat_data"`
+	VATData *VATData `json:"vat_data"`
 }
 
 func NewB2BSberbankPaymentMethod() B2BSberbankPaymentMethod {
 	return B2BSberbankPaymentMethod{BasePaymentMethod: BasePaymentMethod{Type: B2BSberbankPaymentMethodType}}
 }
 
-func (m *B2BSberbankPaymentMethod) WithPayerBankDetails(payerBankDetails PayerBankDetails) *B2BSberbankPaymentMethod {
+func (m *B2BSberbankPaymentMethod) WithPayerBankDetails(payerBankDetails *PayerBankDetails) *B2BSberbankPaymentMethod {
 	m.PayerBankDetails = payerBankDetails
 	return m
 }
 
 func (m *B2BSberbankPaymentMethod) WithPaymentPurpose(paymentPurpose string) *B2BSberbankPaymentMethod {
-	m.PaymentPurpose = paymentPurpose
+	m.PaymentPurpose = &paymentPurpose
 	return m
 }
 
-func (m *B2BSberbankPaymentMethod) WithVATData(vatData VATData) *B2BSberbankPaymentMethod {
+func (m *B2BSberbankPaymentMethod) WithVATData(vatData *VATData) *B2BSberbankPaymentMethod {
 	m.VATData = vatData
 	return m
 }
@@ -206,7 +206,7 @@ type SberbankPaymentMethod struct {
 	BasePaymentMethod
 	// Телефон пользователя, на который зарегистрирован аккаунт в СберБанк Онлайн/SberPay.
 	// Указывается в формате ITU-T E.164, например 79000000000.
-	Phone string `json:"phone"`
+	Phone *string `json:"phone"`
 }
 
 func NewSberbankPaymentMethod() SberbankPaymentMethod {
@@ -214,7 +214,7 @@ func NewSberbankPaymentMethod() SberbankPaymentMethod {
 }
 
 func (m *SberbankPaymentMethod) WithPhone(phone string) *SberbankPaymentMethod {
-	m.Phone = phone
+	m.Phone = &phone
 	return m
 }
 
@@ -229,7 +229,7 @@ func NewTinkoffBankPaymentMethod() TinkoffBankPaymentMethod {
 type YooMoneyPaymentMethod struct {
 	BasePaymentMethod
 	// Номер кошелька ЮMoney, из которого заплатил пользователь.
-	AccountNumber string `json:"account_number"`
+	AccountNumber *string `json:"account_number"`
 }
 
 func NewYooMoneyPaymentMethod() YooMoneyPaymentMethod {
@@ -237,14 +237,14 @@ func NewYooMoneyPaymentMethod() YooMoneyPaymentMethod {
 }
 
 func (m *YooMoneyPaymentMethod) WithAccountNumber(accountNumber string) *YooMoneyPaymentMethod {
-	m.AccountNumber = accountNumber
+	m.AccountNumber = &accountNumber
 	return m
 }
 
 type ApplePayPaymentMethod struct {
 	BasePaymentMethod
 	// Содержимое поля paymentData из объекта PKPaymentToken (платежный токен Apple Pay). Приходит в формате Base64.
-	PaymentData string `json:"payment_data"`
+	PaymentData *string `json:"payment_data"`
 }
 
 func NewApplePayPaymentMethod() ApplePayPaymentMethod {
@@ -252,7 +252,7 @@ func NewApplePayPaymentMethod() ApplePayPaymentMethod {
 }
 
 func (m *ApplePayPaymentMethod) WithPaymentData(paymentData string) *ApplePayPaymentMethod {
-	m.PaymentData = paymentData
+	m.PaymentData = &paymentData
 	return m
 }
 
@@ -261,7 +261,7 @@ type GooglePayPaymentMethod struct {
 	// Требуется криптограмма Payment Token Cryptography для проведения оплаты через Google Pay.
 	// Чтобы ее получить, необходимо вызвать метод PaymentData.getPaymentMethodToken().getToken()
 	// в мобильном приложении на устройстве пользователя.
-	PaymentMethodToken string `json:"payment_method_token"`
+	PaymentMethodToken *string `json:"payment_method_token"`
 }
 
 func NewGooglePayPaymentMethod() GooglePayPaymentMethod {
@@ -269,14 +269,14 @@ func NewGooglePayPaymentMethod() GooglePayPaymentMethod {
 }
 
 func (m *GooglePayPaymentMethod) WithPaymentData(paymentMethodToken string) *GooglePayPaymentMethod {
-	m.PaymentMethodToken = paymentMethodToken
+	m.PaymentMethodToken = &paymentMethodToken
 	return m
 }
 
 type QiwiPaymentMethod struct {
 	BasePaymentMethod
 	// Телефон, на который зарегистрирован аккаунт в QIWI. Указывается в формате ITU-T E.164, например 79000000000.
-	Phone string `json:"phone"`
+	Phone *string `json:"phone"`
 }
 
 func NewQiwiPaymentMethod() QiwiPaymentMethod {
@@ -284,7 +284,7 @@ func NewQiwiPaymentMethod() QiwiPaymentMethod {
 }
 
 func (m *QiwiPaymentMethod) WithPhone(phone string) *QiwiPaymentMethod {
-	m.Phone = phone
+	m.Phone = &phone
 	return m
 }
 
