@@ -81,12 +81,11 @@ func doRequestWithDecode(
 	}
 
 	if response.StatusCode != http.StatusOK {
-		b, bodyReadError := io.ReadAll(response.Body)
-		if bodyReadError != nil {
-			return errors.Wrapf(bodyReadError, "reading response body on error, status_code: %d", response.StatusCode)
+		responseError := &Error{}
+		if err = json.NewDecoder(response.Body).Decode(responseError); err != nil {
+			return errors.Wrapf(err, "decoding response error, status_code: %d", response.StatusCode)
 		}
-		err = errors.New("request unsuccessful")
-		return errors.Wrapf(err, "status_code: %d, message: %s", response.StatusCode, string(b))
+		return responseError
 	}
 
 	if r.responseTarget != nil {

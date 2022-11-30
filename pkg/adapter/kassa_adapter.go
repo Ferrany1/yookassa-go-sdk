@@ -4,14 +4,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/confirmation"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment_method"
 	"net/http"
 
 	"github.com/google/uuid"
 	"github.com/pkg/errors"
 
 	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/confirmation"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/payment_method"
 )
 
 type KassaAdapter[
@@ -98,10 +98,6 @@ func (k KassaAdapter[PaymentMethod, Confirmation]) PaymentRequest(
 	); err != nil {
 		return nil, errors.Wrap(err, "payment request")
 	}
-
-	if result.Type == errorType {
-		return nil, errors.New(result.Description)
-	}
 	return result, nil
 }
 
@@ -120,10 +116,6 @@ func (k KassaAdapter[PaymentMethod, Confirmation]) GetPayment(
 		withResponseTarget(result),
 	); err != nil {
 		return nil, errors.Wrap(err, "getting payment")
-	}
-
-	if result.Type == errorType {
-		return nil, errors.New(result.Description)
 	}
 	return result, nil
 }

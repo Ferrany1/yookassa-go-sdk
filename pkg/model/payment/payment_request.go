@@ -1,18 +1,26 @@
 package payment
 
 import (
-	"strconv"
-
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/confirmation"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment_method"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/airlane"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/amount"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/confirmation"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/deal"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/fraud_data"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/metadata"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/payment_method"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/receipt"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/recipient"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/transfer"
 )
 
 type PaymentRequest[
 	PaymentMethod payment_method.GenericPaymentMethod,
 	Confirmation confirmation.GenericConfirmation,
 ] struct {
-	RawPaymentPart
+	RawPaymentRequestPart
+	// Данные для оплаты конкретным способом.
+	// Вы можете не передавать этот объект в запросе.
+	// В этом случае пользователь будет выбирать способ оплаты на стороне ЮKassa.
 	PaymentMethodData *PaymentMethod `json:"payment_method_data"`
 	// Данные, необходимые для инициирования выбранного сценария подтверждения платежа пользователем.
 	Confirmation *Confirmation `json:"confirmation"`
@@ -26,13 +34,9 @@ func NewPaymentRequest[
 }
 
 func (p *PaymentRequest[PaymentMethod, Confirmation]) WithAmount(
-	value float64,
-	currency amount.Currency,
+	amount *amount.Amount,
 ) *PaymentRequest[PaymentMethod, Confirmation] {
-	p.Amount = amount.Amount{
-		Value:    strconv.FormatFloat(value, 'f', 2, 64),
-		Currency: currency,
-	}
+	p.Amount = amount
 	return p
 }
 
@@ -44,16 +48,16 @@ func (p *PaymentRequest[PaymentMethod, Confirmation]) WithDescription(
 }
 
 func (p *PaymentRequest[PaymentMethod, Confirmation]) WithRecipient(
-	recipient Recipient,
+	recipient *recipient.Recipient,
 ) *PaymentRequest[PaymentMethod, Confirmation] {
-	p.Recipient = &recipient
+	p.Recipient = recipient
 	return p
 }
 
 func (p *PaymentRequest[PaymentMethod, Confirmation]) WithDeal(
-	deal Deal,
+	deal *deal.Deal,
 ) *PaymentRequest[PaymentMethod, Confirmation] {
-	p.Deal = &deal
+	p.Deal = deal
 	return p
 }
 
@@ -65,16 +69,16 @@ func (p *PaymentRequest[PaymentMethod, Confirmation]) WithMerchantCustomerID(
 }
 
 func (p *PaymentRequest[PaymentMethod, Confirmation]) WithTransfers(
-	transfers Transfers,
+	transfers *transfer.Transfers,
 ) *PaymentRequest[PaymentMethod, Confirmation] {
-	p.Transfers = &transfers
+	p.Transfers = transfers
 	return p
 }
 
 func (p *PaymentRequest[PaymentMethod, Confirmation]) WithReceipt(
-	receipt Receipt,
+	receipt *receipt.Receipt,
 ) *PaymentRequest[PaymentMethod, Confirmation] {
-	p.Receipt = &receipt
+	p.Receipt = receipt
 	return p
 }
 
@@ -124,15 +128,22 @@ func (p *PaymentRequest[PaymentMethod, Confirmation]) WithClientIP(
 }
 
 func (p *PaymentRequest[PaymentMethod, Confirmation]) WithMetadata(
-	metadata Metadata,
+	metadata *metadata.Metadata,
 ) *PaymentRequest[PaymentMethod, Confirmation] {
-	p.Metadata = &metadata
+	p.Metadata = metadata
+	return p
+}
+
+func (p *PaymentRequest[PaymentMethod, Confirmation]) WithFraudData(
+	fraudData *fraud_data.FraudData,
+) *PaymentRequest[PaymentMethod, Confirmation] {
+	p.FraudData = fraudData
 	return p
 }
 
 func (p *PaymentRequest[PaymentMethod, Confirmation]) WithAirlineTicketData(
-	airlineTicketData AirlineTicketData,
+	airlineTicket *airlane.AirlineTicket,
 ) *PaymentRequest[PaymentMethod, Confirmation] {
-	p.AirlineTicketData = &airlineTicketData
+	p.Airline = airlineTicket
 	return p
 }

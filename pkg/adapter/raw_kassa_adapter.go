@@ -84,10 +84,6 @@ func (k RawKassaAdapter) PaymentRequest(
 	); err != nil {
 		return nil, errors.Wrap(err, "payment request")
 	}
-
-	if result.Type == errorType {
-		return nil, errors.New(result.Description)
-	}
 	return result, nil
 }
 
@@ -103,10 +99,6 @@ func (k RawKassaAdapter) GetPayment(ctx context.Context, id string) (*payment.Ra
 		withResponseTarget(result),
 	); err != nil {
 		return nil, errors.Wrap(err, "getting payment")
-	}
-
-	if result.Type == errorType {
-		return nil, errors.New(result.Description)
 	}
 	return result, nil
 }

@@ -15,11 +15,11 @@ import (
 	"time"
 
 	"github.com/Ferrany1/yookassa-go-sdk/pkg/adapter"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/confirmation"
 	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment_method"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/status"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/amount"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/confirmation"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/payment_method"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/status"
 )
 
 func main() {
@@ -34,7 +34,7 @@ func main() {
 
 	// Создание и настройка платежа.
 	request := payment.NewPaymentRequest[payment_method.YooMoneyPaymentMethod, confirmation.RedirectConfirmation]().
-		WithAmount(10, amount.RubCurrency).
+		WithAmount(amount.NewAmount().WithFloatValue(10).WithCurrency(amount.RubCurrency)).
 		WithDescription("тестовый заказ").
 		WithSavePaymentMethod().
 		WithCapture().
@@ -75,91 +75,91 @@ func main() {
 package main
 
 import (
-	"context"
-	"time"
-
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/adapter"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/confirmation"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment_method"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/status"
+    "context"
+    "time"
+    
+    "github.com/Ferrany1/yookassa-go-sdk/pkg/adapter"
+    "github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
+    "github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/amount"
+    "github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/confirmation"
+    "github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/payment_method"
+    "github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/status"
 )
 
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*10)
-	defer cancel()
-	kassa := adapter.NewKassaAdapter[payment_method.YooMoneyPaymentMethod, confirmation.RedirectConfirmation](
-		&adapter.Config{
-			ShopID: "ИДЕНТИФИКАТОР_МАГАЗИНА",
-			Token:  "ПРИВАТНЫЙ_КЛЮЧ",
-		},
-	)
-
-	// Создание и настройка платежа.
-	request := payment.NewPaymentRequest[payment_method.YooMoneyPaymentMethod, confirmation.RedirectConfirmation]().
-		WithAmount(10, amount.RubCurrency).
-		WithDescription("тестовый заказ").
-		WithSavePaymentMethod().
-		WithCapture().
-		WithPaymentMethodData(payment_method.NewYooMoneyPaymentMethod()).
-		WithConfirmation(confirmation.NewRedirectConfirmation().WithLocale(confirmation.RussianLocale))
-	// Отправка конфига и получение экземпляра платежа в ответ.
-	paymentResponse, err := kassa.PaymentRequest(ctx, request)
-	if err != nil {
-		panic(err)
-	}
-
-	// Вывод ссылки для оплаты.
-	println(paymentResponse.Confirmation.ConfirmationURL)
-
-	paymentID := paymentResponse.ID
-	paymentMethodID := ""
-
-	for i := 0; i < 100; i++ {
-		paymentResponse, err = kassa.GetPayment(ctx, paymentID)
-		if err != nil {
-			panic(err)
-		}
-
-		if paymentResponse.Paid {
-			paymentMethodID = paymentResponse.PaymentMethod.ID
-			println("Оплата прошла успешно 1.")
-			break
-		} else if paymentResponse.Status == status.Canceled {
-			println("Пользователь отменил оплату...")
-		}
-		time.Sleep(time.Second * 10)
-	}
-
-	request = payment.NewPaymentRequest[payment_method.YooMoneyPaymentMethod, confirmation.RedirectConfirmation]().
-		WithAmount(10, amount.RubCurrency).
-		WithDescription("тестовый заказ 1.1").
-		WithSavePaymentMethod().
-		WithCapture().
-		WithPaymentMethodID(paymentMethodID)
-
-	paymentResponse, err = kassa.PaymentRequest(context.Background(), request)
-	if err != nil {
-		panic(err)
-	}
-	paymentID = paymentResponse.ID
-
-	for i := 0; i < 100; i++ {
-		paymentResponse, err = kassa.GetPayment(ctx, paymentID)
-		if err != nil {
-			panic(err)
-		}
-
-		if paymentResponse.Paid {
-			paymentMethodID = paymentResponse.PaymentMethod.ID
-			println("Оплата прошла успешно 1.1")
-			break
-		} else if paymentResponse.Status == status.Canceled {
-			println("Пользователь отменил оплату...")
-		}
-		time.Sleep(time.Second * 10)
-	}
+    ctx, cancel := context.WithTimeout(context.Background(), time.Minute*10)
+    defer cancel()
+    kassa := adapter.NewKassaAdapter[payment_method.YooMoneyPaymentMethod, confirmation.RedirectConfirmation](
+        &adapter.Config{
+            ShopID: "ИДЕНТИФИКАТОР_МАГАЗИНА",
+            Token:  "ПРИВАТНЫЙ_КЛЮЧ",
+        },
+    )
+    
+    // Создание и настройка платежа.
+    request := payment.NewPaymentRequest[payment_method.YooMoneyPaymentMethod, confirmation.RedirectConfirmation]().
+        WithAmount(amount.NewAmount().WithFloatValue(10).WithCurrency(amount.RubCurrency)).
+        WithDescription("тестовый заказ").
+        WithSavePaymentMethod().
+        WithCapture().
+        WithPaymentMethodData(payment_method.NewYooMoneyPaymentMethod()).
+        WithConfirmation(confirmation.NewRedirectConfirmation().WithLocale(confirmation.RussianLocale))
+    // Отправка конфига и получение экземпляра платежа в ответ.
+    paymentResponse, err := kassa.PaymentRequest(ctx, request)
+    if err != nil {
+        panic(err)
+    }
+    
+    // Вывод ссылки для оплаты.
+    println(paymentResponse.Confirmation.ConfirmationURL)
+    
+    paymentID := paymentResponse.ID
+    paymentMethodID := ""
+    
+    for i := 0; i < 100; i++ {
+        paymentResponse, err = kassa.GetPayment(ctx, paymentID)
+        if err != nil {
+            panic(err)
+        }
+        
+        if paymentResponse.Paid {
+            paymentMethodID = paymentResponse.PaymentMethod.ID
+            println("Оплата прошла успешно 1.")
+            break
+        } else if paymentResponse.Status == status.Canceled {
+            println("Пользователь отменил оплату...")
+        }
+        time.Sleep(time.Second * 10)
+    }
+    
+    request = payment.NewPaymentRequest[payment_method.YooMoneyPaymentMethod, confirmation.RedirectConfirmation]().
+        WithAmount(amount.NewAmount().WithFloatValue(10).WithCurrency(amount.RubCurrency)).
+        WithDescription("тестовый заказ 1.1").
+        WithSavePaymentMethod().
+        WithCapture().
+        WithPaymentMethodID(paymentMethodID)
+    
+    paymentResponse, err = kassa.PaymentRequest(context.Background(), request)
+    if err != nil {
+        panic(err)
+    }
+    paymentID = paymentResponse.ID
+    
+    for i := 0; i < 100; i++ {
+        paymentResponse, err = kassa.GetPayment(ctx, paymentID)
+        if err != nil {
+            panic(err)
+        }
+        
+        if paymentResponse.Paid {
+            paymentMethodID = paymentResponse.PaymentMethod.ID
+            println("Оплата прошла успешно 1.1")
+            break
+        } else if paymentResponse.Status == status.Canceled {
+            println("Пользователь отменил оплату...")
+        }
+        time.Sleep(time.Second * 10)
+    }
 }
 ```
 
@@ -173,10 +173,10 @@ import (
 	"time"
 
 	"github.com/Ferrany1/yookassa-go-sdk/pkg/adapter"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/amount"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/confirmation"
 	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment"
-	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/status"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/amount"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/confirmation"
+	"github.com/Ferrany1/yookassa-go-sdk/pkg/model/payment/status"
 )
 
 func main() {
@@ -191,8 +191,8 @@ func main() {
 
 	// Создание и настройка платежа.
 	request := &payment.RawPaymentRequest{
-		RawPaymentPart: payment.RawPaymentPart{
-			Amount: amount.Amount{
+		RawPaymentRequestPart: payment.RawPaymentRequestPart{
+			Amount: &amount.Amount{
 				Value:    "10.00",
 				Currency: "RUB",
 			},
@@ -214,7 +214,7 @@ func main() {
 	}
 
 	// Вывод ссылки для оплаты.
-	println(paymentResponse.Confirmation.ConfirmationURL)
+	println(paymentResponse.Confirmation["confirmation_url"])
 
 	paymentID := paymentResponse.ID
 	// Ожидание оплаты и опрос сервера на предмет её совершения.

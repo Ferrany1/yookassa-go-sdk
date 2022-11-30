@@ -6,8 +6,6 @@ const (
 	paymentsEndpoint = "payments/"
 	captureEndpoint  = "/capture"
 	declineEndpoint  = "/cancel"
-
-	errorType = "error"
 )
 
 type Config struct {
